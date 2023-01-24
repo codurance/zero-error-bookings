@@ -1,20 +1,17 @@
-# Create Docker Image
+# Start the Environment
 
 ```bash
-docker build .
+docker compose up -d
 ```
 
-# Run a Docker Container
-
-```bash
-docker run -d -p 8080:80 --name app app:1.0.0
-```
-
-# Access the App
+# Open the Python App
 
 http://localhost:8080
 
-# Run the App Locally without Docker
+
+# Helper Commands
+
+## Run the App Locally without Docker
 
 ```bash
 # Install dependencies
@@ -27,7 +24,19 @@ uvicorn app:app --reload
 http://localhost:8000
 ```
 
-# Helper Commands
+## Docker Comands
+
+Create Docker image:
+
+```bash
+docker build .
+```
+
+Run the Docker container:
+
+```bash
+docker run -d -p 8080:80 --name app app:1.0.0
+```
 
 View running containers:
 
