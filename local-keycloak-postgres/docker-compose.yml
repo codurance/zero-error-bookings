@@ -2,15 +2,25 @@ version: "3.9"
 
 services:
 
-  app:
-    build: .
-    image: app
-    container_name: app
+  keycloak:
+    image: quay.io/keycloak/keycloak:20.0.3
+    container_name: keycloak
     ports:
-      - 8080:80
+      - 8080:8080
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: password
+      KC_HOSTNAME: localhost
+      KC_HOSTNAME_STRICT: false
+      KC_HOSTNAME_STRICT_HTTPS: false
+      KC_HTTP_ENABLED: true
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://postgres/db
+      KC_DB_USERNAME: admin
+      KC_DB_PASSWORD: password
+    entrypoint: /opt/keycloak/bin/kc.sh start
     depends_on:
-      postgres:
-        condition: service_healthy
+      - postgres
 
   postgres:
     image: postgres:15.1-alpine
@@ -22,14 +32,6 @@ services:
       POSTGRES_USER: admin
       POSTGRES_PASSWORD: password
       POSTGRES_DB: db
-    volumes:
-      - ./scripts:/docker-entrypoint-initdb.d
-    healthcheck:
-      test: psql -v ON_ERROR_STOP=1 -U "admin" -d "db" -c 'SELECT * FROM users;'
-      interval: 20s
-      timeout: 10s
-      retries: 3
-      start_period: 40s
 
   pgadmin:
     image: dpage/pgadmin4:6.19
