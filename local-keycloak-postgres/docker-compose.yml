@@ -1,5 +1,9 @@
 version: "3.9"
 
+networks:
+  postgres:
+    name: postgres
+
 services:
 
   keycloak:
@@ -19,6 +23,8 @@ services:
       KC_DB_USERNAME: admin
       KC_DB_PASSWORD: password
     entrypoint: /opt/keycloak/bin/kc.sh start
+    networks:
+      - postgres
     depends_on:
       - postgres
 
@@ -32,6 +38,8 @@ services:
       POSTGRES_USER: admin
       POSTGRES_PASSWORD: password
       POSTGRES_DB: db
+    networks:
+      - postgres
 
   pgadmin:
     image: dpage/pgadmin4:6.19
@@ -42,3 +50,5 @@ services:
       PGADMIN_DEFAULT_EMAIL: admin@admin.com
       PGADMIN_DEFAULT_PASSWORD: password
       PGADMIN_CONFIG_SERVER_MODE: 'False'
+    networks:
+      - postgres

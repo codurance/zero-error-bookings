@@ -16,7 +16,7 @@ Run the Keycloak container individually (i.e., without Docker Compose; the comma
 docker run \
   --name keycloak \
   -p 8080:8080 \
-  --network zero-error-bookings_default \
+  --network postgres \
   -e KEYCLOAK_ADMIN=admin \
   -e KEYCLOAK_ADMIN_PASSWORD=password \
   quay.io/keycloak/keycloak:20.0.3 \
