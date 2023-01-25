@@ -1,0 +1,52 @@
+version: "3.9"
+
+networks:
+  mysql:
+    name: mysql
+
+services:
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:20.0.3
+    container_name: keycloak
+    ports:
+      - 8080:8080
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: password
+      KC_HOSTNAME: localhost
+      KC_HOSTNAME_STRICT: false
+      KC_HOSTNAME_STRICT_HTTPS: false
+      KC_HTTP_ENABLED: true
+      KC_DB: mysql
+      KC_DB_URL: jdbc:mysql://mysql/db
+      KC_DB_USERNAME: admin
+      KC_DB_PASSWORD: password
+    entrypoint: /opt/keycloak/bin/kc.sh start
+    networks:
+      - mysql
+    depends_on:
+      - mysql
+
+  mysql:
+    image: mysql:8.0.32
+    container_name: mysql
+    restart: always
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_DATABASE: db
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: password
+      MYSQL_ROOT_PASSWORD: password
+    networks:
+      - mysql
+
+  cloudbeaver:
+    image: dbeaver/cloudbeaver:22.3.3
+    container_name: cloudbeaver
+    restart: always
+    ports:
+      - 5050:8978
+    networks:
+      - mysql
