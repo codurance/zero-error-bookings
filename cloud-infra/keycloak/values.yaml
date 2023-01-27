@@ -1,0 +1,61 @@
+keycloak:
+  name: keycloak
+
+  ingress:
+    host: zero-error.codurance.io
+
+  service:
+    port: 80
+
+  deployment:
+    image: quay.io/keycloak/keycloak:20.0.3
+    replicas: 1
+    revisionHistoryLimit: 2
+    containerPort: 8080
+    imagePullPolicy: IfNotPresent
+
+  env:
+    admin: admin
+    adminPassword: password
+    hostnameUrl: https://zero-error.codurance.io
+    hostnameAdminUrl: https://zero-error.codurance.io
+    hostnameStrict: "false"
+    hostnameStrictHttps: "false"
+    httpEnabled: "true"
+    proxy: "edge"
+    db: mysql
+    dbUrl: jdbc:mysql://mysql.keycloak.svc.cluster.local:3306/db
+    dbUsername: admin
+    dbPassword: password
+
+mysql:
+  name: mysql
+
+  service:
+    port: 3306
+
+  deployment:
+    image: mysql:8.0.32
+    replicas: 1
+    revisionHistoryLimit: 2
+    containerPort: 3306
+    imagePullPolicy: IfNotPresent
+
+  env:
+    database: db
+    user: admin
+    password: password
+    rootPassword: password
+
+cloudbeaver:
+  name: cloudbeaver
+
+  service:
+    port: 80
+
+  deployment:
+    image: dbeaver/cloudbeaver:22.3.3
+    replicas: 1
+    revisionHistoryLimit: 2
+    containerPort: 8978
+    imagePullPolicy: IfNotPresent
