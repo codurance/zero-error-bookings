@@ -43,6 +43,20 @@ services:
     networks:
       - mysql
 
+  mysql_2:
+    image: mysql:8.0.32
+    container_name: mysql_2
+    restart: always
+    ports:
+      - 3307:3306
+    environment:
+      MYSQL_DATABASE: db
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: password
+      MYSQL_ROOT_PASSWORD: password
+    networks:
+      - mysql
+
   cloudbeaver:
     image: dbeaver/cloudbeaver:22.3.3
     container_name: cloudbeaver
