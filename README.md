@@ -29,7 +29,7 @@ terraform plan
 terraform apply
 ```
 
-The following error might appear on the first `terraform apply`. This probably happents because the K8s token passed to the `kubernetes` provider seems to expire by the time the cluster finishes creating or it does not exist at all yet. The best thing to do would be to get the token from the EKS module outputs, but such a variable does not seem to exist in the module. Run `terraform apply` again and the `aws-auth` ConfigMap updates successfuly.
+The following error might appear on the first `terraform apply`. This probably happents because the K8s token passed to the `kubernetes` provider seems to expire by the time the cluster finishes creating or it does not exist at all yet. The best thing to do would be to get the token from the EKS module outputs, but such a variable does not seem to exist in the module. Run `terraform apply` again and the `aws-auth` ConfigMap updates successfuly. This is probably going to happen only on the first run of the Terraform script.
 
 ```bash
 │ Error: The configmap "aws-auth" does not exist
