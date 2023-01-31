@@ -53,6 +53,8 @@ aws eks update-kubeconfig --region eu-central-1 --name dev-zero-eks
 
 ## Install NGINX Ingress
 
+Note that the NodePort must match the `http_target_group_port` variable in Terraform. The variable is then used in the ALB Target Group.
+
 ```bash
 helm upgrade \
   --install nginx-ingress cloud-infra/nginx-ingress \
