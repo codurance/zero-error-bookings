@@ -2,7 +2,7 @@ keycloak:
   name: keycloak
 
   ingress:
-    host: zero-error.codurance.io
+    host: zero.codurance.io
 
   service:
     port: 80
@@ -17,8 +17,8 @@ keycloak:
   env:
     admin: admin
     adminPassword: password
-    hostnameUrl: https://zero-error.codurance.io
-    hostnameAdminUrl: https://zero-error.codurance.io
+    hostnameUrl: https://zero.codurance.io
+    hostnameAdminUrl: https://zero.codurance.io
     hostnameStrict: "false"
     hostnameStrictHttps: "false"
     httpEnabled: "true"
