@@ -47,6 +47,25 @@ mysql:
     password: password
     rootPassword: password
 
+mysql2:
+  name: mysql2
+
+  service:
+    port: 3306
+
+  deployment:
+    image: mysql:8.0.32
+    replicas: 1
+    revisionHistoryLimit: 2
+    containerPort: 3306
+    imagePullPolicy: IfNotPresent
+
+  env:
+    database: db
+    user: admin
+    password: password
+    rootPassword: password
+
 cloudbeaver:
   name: cloudbeaver
 

@@ -1,0 +1,47 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.mysql2.name }}
+spec:
+  type: ClusterIP
+  selector:
+    app: {{ .Values.mysql2.name }}
+  ports:
+    - port: {{ .Values.mysql2.service.port }}
+      targetPort: {{ .Values.mysql2.deployment.containerPort }}
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.mysql2.name }}
+  labels:
+    app: {{ .Values.mysql2.name }}
+spec:
+  replicas: {{ .Values.mysql2.deployment.replicas }}
+  revisionHistoryLimit: {{ .Values.mysql2.deployment.revisionHistoryLimit }}
+  selector:
+    matchLabels:
+      app: {{ .Values.mysql2.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.mysql2.name }}
+    spec:
+      containers:
+        - name: {{ .Values.mysql2.name }}
+          image: {{ .Values.mysql2.deployment.image }}
+          ports:
+            - name: tcp
+              containerPort: {{ .Values.mysql2.deployment.containerPort }}
+          env:
+            - name: MYSQL_DATABASE
+              value: {{ .Values.mysql2.env.database }}
+            - name: MYSQL_USER
+              value: {{ .Values.mysql2.env.user }}
+            - name: MYSQL_PASSWORD
+              value: {{ .Values.mysql2.env.password }}
+            - name: MYSQL_ROOT_PASSWORD
+              value: {{ .Values.mysql2.env.rootPassword }}
+          imagePullPolicy: {{ .Values.mysql2.deployment.imagePullPolicy }}
