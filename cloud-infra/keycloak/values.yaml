@@ -27,6 +27,9 @@ keycloak:
     dbUrl: jdbc:mysql://mysql.keycloak.svc.cluster.local:3306/db
     dbUsername: admin
     dbPassword: password
+    userDbUrl: jdbc:mysql://mysql2.keycloak.svc.cluster.local:3306/db
+    userDbUsername: admin
+    userDbPassword: password
 
 mysql:
   name: mysql

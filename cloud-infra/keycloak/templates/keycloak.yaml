@@ -84,4 +84,10 @@ spec:
               value: {{ .Values.keycloak.env.dbUsername }}
             - name: KC_DB_PASSWORD
               value: {{ .Values.keycloak.env.dbPassword }}
+            - name: USER_DB_URL
+              value: {{ .Values.keycloak.env.userDbUrl }}
+            - name: USER_DB_USERNAME
+              value: {{ .Values.keycloak.env.userDbUsername }}
+            - name: USER_DB_PASSWORD
+              value: {{ .Values.keycloak.env.userDbPassword }}
           imagePullPolicy: {{ .Values.keycloak.deployment.imagePullPolicy }}
