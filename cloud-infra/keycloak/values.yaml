@@ -8,7 +8,7 @@ keycloak:
     port: 80
 
   deployment:
-    image: quay.io/keycloak/keycloak:20.0.3
+    image: ritateixeira/keycloak-spi:latest
     replicas: 1
     revisionHistoryLimit: 2
     containerPort: 8080
