@@ -8,7 +8,7 @@ keycloak:
     port: 80
 
   deployment:
-    image: ritateixeira/keycloak-spi:1.0.6
+    image: 300563897675.dkr.ecr.eu-central-1.amazonaws.com/dev-zero-ecr:1.0.0
     replicas: 1
     revisionHistoryLimit: 2
     containerPort: 8080
