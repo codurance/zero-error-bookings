@@ -1,0 +1,23 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ .Values.keycloak.name }}
+  annotations:
+    # Resolves the following controller error: 'upstream sent too big header while reading response header from upstream'
+    nginx.org/proxy-buffer-size: 8k
+spec:
+  rules:
+    - host: {{ .Values.keycloak.ingress.host }}
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ .Values.keycloak.name }}
+                port:
+                  number: {{ .Values.keycloak.service.port }}
+  ingressClassName: nginx
+
+
