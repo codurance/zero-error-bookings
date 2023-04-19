@@ -1,39 +1,4 @@
 ---
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: {{ .Values.keycloak.name }}
-  annotations:
-    # Resolves the following controller error: 'upstream sent too big header while reading response header from upstream'
-    nginx.org/proxy-buffer-size: 8k
-spec:
-  rules:
-    - host: {{ .Values.keycloak.ingress.host }}
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: {{ .Values.keycloak.name }}
-                port:
-                  number: {{ .Values.keycloak.service.port }}
-  ingressClassName: nginx
-
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: {{ .Values.keycloak.name }}
-spec:
-  type: ClusterIP
-  selector:
-    app: {{ .Values.keycloak.name }}
-  ports:
-    - port: {{ .Values.keycloak.service.port }}
-      targetPort: {{ .Values.keycloak.deployment.containerPort }}
-
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -57,8 +22,10 @@ spec:
           ports:
             - name: http
               containerPort: {{ .Values.keycloak.deployment.containerPort }}
-          command: ["/opt/keycloak/bin/kc.sh"]
-          args: ["start"]
+          command: 
+            - /bin/bash
+            - -c
+            - /opt/keycloak/bin/kc.sh start
           env:
             - name: KEYCLOAK_ADMIN
               value: {{ .Values.keycloak.env.admin }}
@@ -76,6 +43,10 @@ spec:
               value: {{ .Values.keycloak.env.httpEnabled | quote }}
             - name: KC_PROXY
               value: {{ .Values.keycloak.env.proxy | quote }}
+            - name: KC_HEALTH_ENABLED
+              value: "true"
+            - name: KC_METRICS_ENABLED
+              value: "true"
             - name: KC_DB
               value: {{ .Values.keycloak.env.db }}
             - name: KC_DB_URL
@@ -91,3 +62,21 @@ spec:
             - name: USER_DB_PASSWORD
               value: {{ .Values.keycloak.env.userDbPassword }}
           imagePullPolicy: {{ .Values.keycloak.deployment.imagePullPolicy }}
+          readinessProbe:
+            httpGet:
+              path: /health/ready
+              port: {{ .Values.keycloak.deployment.containerPort }}
+            initialDelaySeconds: 60 
+            periodSeconds: 15
+          livenessProbe:
+            httpGet:
+              path: /health/live
+              port: {{ .Values.keycloak.deployment.containerPort }}
+            initialDelaySeconds: 30
+            periodSeconds: 15
+          startupProbe:
+            httpGet:
+              path: /health
+              port: {{ .Values.keycloak.deployment.containerPort }}
+            failureThreshold: 30
+            periodSeconds: 10
