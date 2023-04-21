@@ -6,7 +6,6 @@ metadata:
   labels:
     app: {{ .Values.keycloak.name }}
 spec:
-  replicas: {{ .Values.keycloak.deployment.replicas }}
   revisionHistoryLimit: {{ .Values.keycloak.deployment.revisionHistoryLimit }}
   selector:
     matchLabels:
