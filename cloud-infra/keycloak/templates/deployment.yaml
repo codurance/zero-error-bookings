@@ -15,7 +15,9 @@ spec:
     metadata:
       labels:
         app: {{ .Values.keycloak.name }}
+        keycloak-cluster: default
     spec:
+      serviceAccountName: keycloak
       containers:
         - name: {{ .Values.keycloak.name }}
           image: {{ .Values.keycloak.deployment.image }}
@@ -25,7 +27,7 @@ spec:
           command: 
             - /bin/bash
             - -c
-            - /opt/keycloak/bin/kc.sh start
+            - /opt/keycloak/bin/kc.sh --verbose start --spi-events-listener-jboss-logging-success-level=info --spi-events-listener-jboss-logging-error-level=warn
           env:
             - name: KEYCLOAK_ADMIN
               value: {{ .Values.keycloak.env.admin }}
@@ -47,6 +49,15 @@ spec:
               value: "true"
             - name: KC_METRICS_ENABLED
               value: "true"
+            - name: KC_CACHE_CONFIG_FILE
+              value: cache-ispn-kubeping.xml
+            - name: JAVA_OPTS_APPEND
+              value: >-
+                -XX:+UseContainerSupport
+                -XX:MaxRAMPercentage=50.0
+                -Djava.awt.headless=true
+                -Dkubeping_namespace={{ .Release.Namespace }}
+                -Dkubeping_label="keycloak-cluster=default"
             - name: KC_DB
               value: {{ .Values.keycloak.env.db }}
             - name: KC_DB_URL

@@ -8,8 +8,8 @@ keycloak:
     port: 80
 
   deployment:
-    image: 300563897675.dkr.ecr.eu-central-1.amazonaws.com/dev-zero-ecr:1.0.12
-    replicas: 1
+    image: 300563897675.dkr.ecr.eu-central-1.amazonaws.com/dev-zero-ecr:1.0.13
+    replicas: 3
     revisionHistoryLimit: 2
     containerPort: 8080
     imagePullPolicy: IfNotPresent
