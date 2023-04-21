@@ -17,7 +17,7 @@ spec:
         app: {{ .Values.keycloak.name }}
         keycloak-cluster: default
     spec:
-      serviceAccountName: keycloak
+      serviceAccountName: {{ .Values.keycloak.name }}
       containers:
         - name: {{ .Values.keycloak.name }}
           image: {{ .Values.keycloak.deployment.image }}
