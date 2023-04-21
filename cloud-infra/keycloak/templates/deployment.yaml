@@ -15,7 +15,7 @@ spec:
     metadata:
       labels:
         app: {{ .Values.keycloak.name }}
-        keycloak-cluster: default
+        keycloak-cluster: {{ .Values.keycloak.cluster.kube_ping_label_value }}
     spec:
       serviceAccountName: {{ .Values.keycloak.name }}
       containers:
@@ -57,7 +57,7 @@ spec:
                 -XX:MaxRAMPercentage=50.0
                 -Djava.awt.headless=true
                 -Dkubeping_namespace={{ .Release.Namespace }}
-                -Dkubeping_label="keycloak-cluster=default"
+                -Dkubeping_label="keycloak-cluster={{ .Values.keycloak.cluster.kube_ping_label_value }}"
             - name: KC_DB
               value: {{ .Values.keycloak.env.db }}
             - name: KC_DB_URL
